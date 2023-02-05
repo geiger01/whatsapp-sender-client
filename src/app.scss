@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 html {
 	font-family: Roboto, sans-serif;
 	font-weight: 400;
@@ -6,6 +12,18 @@ html {
 button,
 textarea {
 	font-family: Roboto, sans-serif;
+}
+
+header {
+	height: 60px;
+	margin-bottom: 30px;
+	border-bottom: 1px solid rgba(227, 227, 227, 0.594);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 500;
+	font-size: 16px;
+	color: #292929;
 }
 
 .app {
@@ -42,7 +60,7 @@ textarea {
 				border-radius: 10px;
 				padding: 10px 20px;
 				resize: none;
-				border: 2px solid rgba(221, 221, 221, 0.426);
+				border: 2px solid rgba(227, 227, 227, 0.594);
 				transition: 0.2s;
 				font-size: 16px;
 
