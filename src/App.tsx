@@ -26,17 +26,24 @@ function App() {
     setIsLoading(true);
     setNotification('Please wait for the barcode to be displayed.');
     try {
-      await axios.post(`https://whatsapp-sender-server.onrender.com/api/send`, {
-        msg,
-        nums: formattedNumbers
-      });
+      await axios.post(`https://whatsapp-sender-server.onrender.com/api/send`,
+        {
+          msg,
+          nums: formattedNumbers
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       setNums('');
       setMsg('');
       setNotification(`Messages sent successfully.`);
     } catch (e) {
       setNotification(`Oops, something went wrong.`);
     }
-    
+
     setTimeout(() => {
       setNotification('');
     }, 5000);
