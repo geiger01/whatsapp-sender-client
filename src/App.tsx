@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { v4 } from "uuid";
 
@@ -105,7 +105,7 @@ function App() {
             </p>
           </div>
           {barcodeExist &&
-            <img src={`https://res.cloudinary.com/dmt2zl1ut/image/upload/${imgId}`} alt="Cloudinary Image" />
+            <img src={`https://res.cloudinary.com/dmt2zl1ut/image/upload/${imgId}`} alt="barcode" />
           }
         </form>
       </div>
