@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import axios from 'axios';
+import { v4 } from "uuid";
 
 import './app.scss';
 
@@ -8,6 +9,8 @@ function App() {
   const [msg, setMsg] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [notification, setNotification] = useState<string>('');
+  const [imgId, setImgId] = useState('');
+  const [barcodeExist, setBarcodeExist] = useState(false);
 
   async function onSend(e: any) {
     e.preventDefault();
@@ -25,11 +28,14 @@ function App() {
     });
     setIsLoading(true);
     setNotification('Please wait for the barcode to be displayed.');
+
     try {
+      checkBarcodeExists();
       await axios.post(`https://whatsapp-sender-server.onrender.com/api/send`,
         {
           msg,
-          nums: formattedNumbers
+          nums: formattedNumbers,
+          id: imgId
         },
         {
           headers: {
@@ -49,6 +55,32 @@ function App() {
     }, 5000);
     setIsLoading(false);
   }
+
+  function checkBarcodeExists(i: number = 1) {
+    if (i === 5) return;
+    fetch(`https://res.cloudinary.com/dmt2zl1ut/image/upload/${imgId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          // Image exists
+          setBarcodeExist(true);
+          return;
+        } else {
+          // Image does not exist
+          setTimeout(() => checkBarcodeExists(i + 1), 5000);
+          return;
+        }
+      })
+      .catch((error) => {
+        // Failed to fetch image
+        setBarcodeExist(false);
+      });
+  }
+
+  useEffect(() => {
+    if (isLoading) {
+      setImgId(v4());
+    }
+  }, [isLoading]);
 
   return (
     <>
@@ -72,6 +104,9 @@ function App() {
               {notification}
             </p>
           </div>
+          {barcodeExist &&
+            <img src={`https://res.cloudinary.com/dmt2zl1ut/image/upload/${imgId}`} alt="Cloudinary Image" />
+          }
         </form>
       </div>
     </>
